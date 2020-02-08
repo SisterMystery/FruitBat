@@ -22,32 +22,46 @@
     [Cmdlet("Get", "Builds")]
     public class GetBuilds : ParallelRequestCmdlet
     {
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, ParameterSetName = "Query")]
         public string BranchName;
+        
+        [Parameter(Mandatory = false, ParameterSetName = "BuildId")]
+        public string BuildId;
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, ParameterSetName = "Query")]
         public string RepositoryId = "d0618add-9da3-4bfc-ab49-fbd949db993c";
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, ParameterSetName = "Query")]
         public string RepositoryType = "tfsgit";
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, ParameterSetName = "Query")]
         public string ResultFilter = "succeeded";
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, ParameterSetName = "Query")]
         public DateTime? MinTime;
 
         protected override void ProcessRecord()
         {
-            var arguments = new Dictionary<string,string>
+            IDictionary<string, string> arguments = null;
+            string subPath; 
+
+            if (BuildId != null)
             {
-                {"BranchName", BranchName },
-                {"RepositoryId", RepositoryId },
-                {"RepositoryType", RepositoryType },
-                {"ResultFilter", ResultFilter },
-                {"MinTime", MinTime?.ToString()}
-            };
-            var uriPath = RequestHelper.BuildRequestUri(VssAuthenticator.AzureDevOpsBuildsHost, "DefaultCollection/One/_apis/build/builds", arguments);
+                subPath = $"DefaultCollection/One/_apis/build/builds/{BuildId}";
+            } else {
+
+                subPath = $"DefaultCollection/One/_apis/build/builds";
+                arguments = new Dictionary<string, string>
+                {
+                    {"BranchName", BranchName },
+                    {"RepositoryId", RepositoryId },
+                    {"RepositoryType", RepositoryType },
+                    {"ResultFilter", ResultFilter },
+                    {"MinTime", MinTime?.ToString()}
+                };
+            }
+            
+            var uriPath = RequestHelper.BuildRequestUri(VssAuthenticator.AzureDevOpsBuildsHost, subPath, arguments);
             WriteObject(RequestHelper.SendRequestAsync(uriPath).Result);
         }
     }
