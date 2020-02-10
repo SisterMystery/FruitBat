@@ -69,7 +69,7 @@
     [Cmdlet("ParallelGet", "Builds")]
     public class ParallelGetBuilds : GetBuilds
     {
-        [Parameter(Mandatory = true, ValueFromPipeline = true)]
+        [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = "BranchNames")]
         public string[] BranchNames;
 
         public IDictionary<string, string> BaseParameters;
