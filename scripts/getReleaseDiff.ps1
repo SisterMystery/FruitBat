@@ -1,6 +1,5 @@
 [CmdletBinding()]
 param([int]$fromRelease, [int]$toRelease, [Switch]$force = $false)
-. .\Utility.ps1
 if(!$force -and $toRelease -le $fromRelease)
 {
     Write-Warning "fromRelease should be older than toRelease. If you really mean it, retry with -force." 
