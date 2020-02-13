@@ -28,16 +28,16 @@
         [Parameter(Mandatory = false, ParameterSetName = "BuildId")]
         public string BuildId;
 
-        [Parameter(Mandatory = false, ParameterSetName = "Query")]
+        [Parameter(Mandatory = false)]
         public string RepositoryId = "d0618add-9da3-4bfc-ab49-fbd949db993c";
 
-        [Parameter(Mandatory = false, ParameterSetName = "Query")]
+        [Parameter(Mandatory = false)]
         public string RepositoryType = "tfsgit";
 
-        [Parameter(Mandatory = false, ParameterSetName = "Query")]
+        [Parameter(Mandatory = false)]
         public string ResultFilter = "succeeded";
 
-        [Parameter(Mandatory = false, ParameterSetName = "Query")]
+        [Parameter(Mandatory = false)]
         public DateTime? MinTime;
 
         protected override void ProcessRecord()
